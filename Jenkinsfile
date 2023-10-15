@@ -46,4 +46,13 @@ pipeline {
             }
         }       
     }
+    //slack notification
+    post {
+        always {
+            echo 'Slack Notifications'
+            slacksend channel : '#<your channel name>',
+                color: COLOR_MAP[currentBuild.currentResults],
+                message: "${currentBuild.currentResult}: Job %{env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+        }
+    }
   }
