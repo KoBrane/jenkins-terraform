@@ -13,19 +13,16 @@ pipeline {
                         }
                     }
                 }
-            
-
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
         }
-
         stage('Terraform Format') {
             steps {
                 sh 'terraform fmt'
+            }
         }
-
         stage('Terraform Validate') {
             steps {
                 sh 'terraform validate'
@@ -43,6 +40,5 @@ pipeline {
                 sh 'terraform apply tfplan -auto-approve'
             }
         }
-    }
     }
   }
