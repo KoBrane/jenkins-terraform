@@ -40,5 +40,10 @@ pipeline {
                 sh 'terraform apply "tfplan"'
             }
         }
+        stage('Terraform Destroy') {
+            steps {
+                sh 'terraform apply -destroy "tfplan"'
+            }
+        }       
     }
   }
