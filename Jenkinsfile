@@ -13,9 +13,7 @@ pipeline {
         stage('checkout') {
             steps {
                  script{
-                        dir("terraform")
-                        {
-                            git "https://github.com/KoBrane/jenkins-terraform.git"
+                        git branch: 'main', url: "https://github.com/KoBrane/jenkins-terraform.git"
                         }
                     }
                 }
@@ -23,11 +21,26 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'pwd;cd terraform/ ; terraform init'
-                sh "pwd;cd terraform/ ; terraform plan -out tfplan"
-                sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
+                sh 'terraform init'
             }
         }
+        stage('Terraform Formatter') {
+            steps {
+                sh 'terraform fmt'
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                sh 'terraform validate'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh 'terraform plan -out tf.plan'
+            }
+        }
+
         stage('Approval') {
            when {
                not {
@@ -46,7 +59,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "pwd;cd terraform/ ; terraform apply -input=false tfplan"
+                sh 'terraform apply -input=false tfplan'
             }
         }
     }
