@@ -31,7 +31,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan -out tf.plan'
+                sh 'terraform plan -out tfplan'
             }
         }
 
